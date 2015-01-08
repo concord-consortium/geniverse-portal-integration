@@ -13,7 +13,8 @@ module Geniverse
         # raise ActiveRecord::RecordNotFound, "Couldn't find user with username #{params[:username]}" unless @users
         @users = [] unless @users
       else
-         @users = User.all
+         # @users = User.all
+         @users = []
       end
 
 
