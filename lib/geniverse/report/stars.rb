@@ -11,7 +11,7 @@ module Geniverse
       end
 
       def caselogActivities
-        json = File.read(File.join(File.dirname(__FILE__),'..','..','..','..','apps','lab','cases.js'))
+        json = File.read(File.join(File.dirname(__FILE__),'..','..','cases.js'))
         json.sub!(/.*?Lab.caselogData = \[/m, '[')
         json.sub!(/\];.*?call\(this\);.*/m, ']')
         json.gsub!(/([a-zA-Z0-9]+): ("|t|\[|\{)/) do |m|
