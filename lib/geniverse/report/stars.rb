@@ -45,7 +45,7 @@ module Geniverse
         end
 
         stars_sheet.row(0).concat headers
-        journal_sheet.row(0).concat ['Username', 'Login', 'Class', 'Date/Time', 'Challenge', 'Title', 'Claim', 'Evidence', 'URL', 'Reasoning']
+        journal_sheet.row(0).concat ['Username', 'Login', 'Class', 'Date/Time', 'Challenge', 'Claim', 'Evidence', 'URL', 'Reasoning']
 
         Geniverse::User.all.each do |u|
           next if u.class_name.nil? || u.class_name.empty?
@@ -115,7 +115,7 @@ module Geniverse
         @current_row[:stars] += 1
       end
 
-      # Columns are: ['Username', 'Login', 'Class', 'Date/Time', 'Challenge', 'Title', 'Claim', 'Evidence', 'URL', 'Reasoning']
+      # Columns are: ['Username', 'Login', 'Class', 'Date/Time', 'Challenge', 'Claim', 'Evidence', 'URL', 'Reasoning']
       def process_posts(sheet, user)
         common_row_data = ["#{user.first_name} #{user.last_name}", user.username, user.class_name.strip]
         if (md = user.metadata) && md.is_a?(Hash) && (posts = md['posts']) && posts.is_a?(Hash)
@@ -126,7 +126,7 @@ module Geniverse
             if id != -1 && vals && vals.is_a?(Array) && !vals.empty?
               vals.each do |post|
                 if post && post.is_a?(Hash) && (act = caselogActivities.detect{|a| a.id == id })
-                  sheet.row(@current_row[:posts]).concat(common_row_data + [post['time'], act.title, post['title'], post['claim'], post['evidence'], post['url'], post['reasoning']])
+                  sheet.row(@current_row[:posts]).concat(common_row_data + [post['time'], act.title, post['claim'], post['evidence'], post['url'], post['reasoning']])
 
                   @current_row[:posts] += 1
                 end
