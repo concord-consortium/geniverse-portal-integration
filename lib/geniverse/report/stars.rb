@@ -54,6 +54,19 @@ module Geniverse
           process_stars(stars_sheet, u)
           process_posts(journal_sheet, u)
         end
+
+        # sorter is handed row objects. Sort by Date/Time descending, Login ascending.
+        journal_sort = ->(a,b) {
+          return -1 if a[3] == 'Date/Time'
+          time_a = a[3] || Time.new(1980)
+          time_b = b[3] || Time.new(1980)
+          time_comparison = time_b <=> time_a
+          return time_comparison unless time_comparison == 0
+          return a[1] <=> b[1]
+        }
+        journal_sheet.rows.sort!(&journal_sort)
+        journal_sheet.updated_from(0)
+
         wb.write stream_or_path
       end
 
