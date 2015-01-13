@@ -1,5 +1,5 @@
 module Geniverse
-  class ArticlesController < ApplicationController
+  class ArticlesController < Geniverse::ApplicationController
     # GET /articles
     # GET /articles.xml
     def index

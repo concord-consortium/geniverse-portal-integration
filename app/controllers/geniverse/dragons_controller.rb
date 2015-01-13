@@ -1,5 +1,5 @@
 module Geniverse
-  class DragonsController < ApplicationController
+  class DragonsController < Geniverse::ApplicationController
     # GET /dragons
     # GET /dragons.xml
     def index
