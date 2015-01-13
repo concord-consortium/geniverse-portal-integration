@@ -1,3 +1,5 @@
+require 'time'
+
 module Geniverse
   module Report
     class Stars
@@ -8,6 +10,9 @@ module Geniverse
         @class_names = class_names || []
         @all_classes = @class_names.include?("|ALL|") ? true : false
         @current_row = {:stars => 1, :posts => 1}
+
+        @no_arguments_text = 'no arguments submitted yet'
+        @time_format = '%Y-%m-%d %l:%M %p'
       end
 
       def caselogActivities
@@ -61,8 +66,9 @@ module Geniverse
         # sorter is handed row objects. Sort by Date/Time descending, Login ascending.
         journal_sort = ->(a,b) {
           return -1 if a[3] == 'Date/Time'
-          time_a = a[3] || Time.new(1980)
-          time_b = b[3] || Time.new(1980)
+          return 1 if a[3] == @no_arguments_text
+          time_a = a[3].is_a?(Time) ? a[3] : (Time.parse(a[3]) rescue Time.new(1980))
+          time_b = b[3].is_a?(Time) ? b[3] : (Time.parse(b[3]) rescue Time.new(1980))
           time_comparison = time_b <=> time_a
           return time_comparison unless time_comparison == 0
           return a[1] <=> b[1]
@@ -98,7 +104,12 @@ module Geniverse
                 realVals = vals.map{|v|
                   case v
                   when Hash
-                    "#{v['stars']} (#{v['time']})"
+                    time = v['time']
+                    if time.is_a?(String)
+                      time = Time.parse(v['time']) rescue v['time']
+                    end
+                    t = time.respond_to?('strftime') ? time.strftime(@time_format) : time
+                    "#{v['stars']} (#{t})"
                   else
                     v
                   end
@@ -126,7 +137,12 @@ module Geniverse
             if id != -1 && vals && vals.is_a?(Array) && !vals.empty?
               vals.each do |post|
                 if post && post.is_a?(Hash) && (act = caselogActivities.detect{|a| a.id == id })
-                  sheet.row(@current_row[:posts]).concat(common_row_data + [post['time'], act.title, post['claim'], post['evidence'], post['url'], post['reasoning']])
+                  time = post['time']
+                  if time.is_a?(String)
+                    time = Time.parse(post['time']) rescue post['time']
+                  end
+                  t = time.respond_to?('strftime') ? time.strftime(@time_format) : time
+                  sheet.row(@current_row[:posts]).concat(common_row_data + [t, act.title, post['claim'], post['evidence'], post['url'], post['reasoning']])
 
                   @current_row[:posts] += 1
                 end
@@ -134,7 +150,7 @@ module Geniverse
             end
           end
         else
-          sheet.row(@current_row[:posts]).concat(common_row_data + ['no arguments submitted yet'])
+          sheet.row(@current_row[:posts]).concat(common_row_data + [@no_arguments_text])
 
           @current_row[:posts] += 1
         end
