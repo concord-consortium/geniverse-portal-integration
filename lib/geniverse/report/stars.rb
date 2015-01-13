@@ -47,9 +47,12 @@ module Geniverse
         stars_sheet.row(0).concat headers
         journal_sheet.row(0).concat ['Username', 'Login', 'Class', 'Date/Time', 'Challenge', 'Title', 'Claim', 'Evidence', 'URL', 'Reasoning']
 
-        User.all.each do |u|
+        Geniverse::User.all.each do |u|
           next if u.class_name.nil? || u.class_name.empty?
           next unless @all_classes || @class_names.include?(u.class_name.strip)
+
+          portal_user = ::User.find_by_login(u.username)
+          next if portal_user && portal_user.portal_teacher
 
           process_stars(stars_sheet, u)
           process_posts(journal_sheet, u)
