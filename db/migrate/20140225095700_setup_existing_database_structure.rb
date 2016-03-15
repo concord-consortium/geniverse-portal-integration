@@ -105,7 +105,15 @@ class SetupExistingDatabaseStructure < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index "geniverse_users", ["username", "password_hash"], :name => "index_users_on_username_and_password_hash"
+    # need to set a length here inorder to keep the total size of the index under 255
+    # MySQL has a limit if 767 bytes per index and with utf8 3 bytes need to be reserved
+    # for each char. 3*255 = 765.
+
+    # this original migration has been modified because it should fail if run on a utf8 database.
+    # there is another migration that re-adds this index so existing DBs can be migrated correctly.
+    add_index "geniverse_users", ["username", "password_hash"],
+      :name => "index_users_on_username_and_password_hash",
+      length: {username: 125, password_hash: 125}
 
   end
 
