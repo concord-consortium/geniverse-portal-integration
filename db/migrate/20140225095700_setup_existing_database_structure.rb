@@ -111,10 +111,9 @@ class SetupExistingDatabaseStructure < ActiveRecord::Migration
 
     # this original migration has been modified because it should fail if run on a utf8 database.
     # there is another migration that re-adds this index so existing DBs can be migrated correctly.
-    add_index "geniverse_users", ["username", "password_hash"],
+    add_index :geniverse_users, [:username, :password_hash],
       :name => "index_users_on_username_and_password_hash",
       length: {username: 125, password_hash: 125}
-
   end
 
   def down
