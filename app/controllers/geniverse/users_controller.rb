@@ -7,13 +7,13 @@ module Geniverse
     # GET /users.xml
     def index
       if params[:username]
-        user = User.find_by_username(params[:username])
+        user = Geniverse::User.find_by_username(params[:username])
         @users = [user] if user
 
         # raise ActiveRecord::RecordNotFound, "Couldn't find user with username #{params[:username]}" unless @users
         @users = [] unless @users
       else
-         # @users = User.all
+         # @users = Geniverse::User.all
          @users = []
       end
 
@@ -29,9 +29,9 @@ module Geniverse
     # GET /users/1.xml
     def show
       if params[:id]
-        @user = User.find(params[:id])
+        @user = Geniverse::User.find(params[:id])
       else
-         @user = User.find_by_username(params[:username])
+         @user = Geniverse::User.find_by_username(params[:username])
          raise ActiveRecord::RecordNotFound, "Couldn't find user with username #{params[:username]}" unless @user
       end
 
@@ -45,7 +45,7 @@ module Geniverse
     # GET /users/new
     # GET /users/new.xml
     def new
-      @user = User.new
+      @user = Geniverse::User.new
 
       respond_to do |format|
         format.html # new.html.erb
@@ -55,7 +55,7 @@ module Geniverse
 
     # GET /users/1/edit
     def edit
-      @user = User.find(params[:id])
+      @user = Geniverse::User.find(params[:id])
     end
 
     # POST /users
@@ -65,7 +65,7 @@ module Geniverse
       user_params[:password_hash] = user_params[:passwordHash] if user_params.has_key? :passwordHash
       user_params.delete(:passwordHash)
 
-      @user = User.new(user_params)
+      @user = Geniverse::User.new(user_params)
 
       respond_to do |format|
         if @user.save
@@ -82,7 +82,7 @@ module Geniverse
     # PUT /users/1
     # PUT /users/1.xml
     def update
-      @user = User.find(params[:id])
+      @user = Geniverse::User.find(params[:id])
       respond_to do |format|
         attributes = paramify_json(params[:user])
         if @user.update_attributes(attributes)
@@ -99,7 +99,7 @@ module Geniverse
     # DELETE /users/1
     # DELETE /users/1.xml
     def destroy
-      @user = User.find(params[:id])
+      @user = Geniverse::User.find(params[:id])
       @user.destroy
 
       respond_to do |format|
