@@ -4,7 +4,10 @@
 module Geniverse
   class ApplicationController < ::ApplicationController
     helper :all # include all helpers, all the time
-    protect_from_forgery # See ActionController::RequestForgeryProtection for details
+
+    # Disable CSRF token verification, since Geniverse actually is making cross site requests
+    # and relying on cookies by design.
+    skip_before_filter :verify_authenticity_token
 
     layout 'geniverse/application'
 
