@@ -15,10 +15,10 @@ namespace :geniverse do
     }
 
     cases.each do |c|
-      myCase = Case.find_by_name(c[:name])
+      myCase = Geniverse::Case.find_by_name(c[:name])
       if (myCase.nil?)
         puts "Creating new case: #{c[:name]}"
-        Case.create!(c)
+        Geniverse::Case.create!(c)
       else
         puts "Updating attributes of existing activity: #{c[:name]}"
         myCase.update_attributes!(c)
@@ -531,10 +531,10 @@ namespace :geniverse do
       :match_dragon_alleles=>""}
 
     activities.each do |c|
-      a = Activity.find_by_route(c[:route])
+      a = Geniverse::Activity.find_by_route(c[:route])
       if (a.nil?)
         puts "Creating new activity: #{c[:route]}"
-        Activity.create!(c)
+        Geniverse::Activity.create!(c)
       else
         puts "Updating attributes of existing activity: #{c[:route]}"
         a.update_attributes!(c)
