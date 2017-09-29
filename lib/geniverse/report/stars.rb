@@ -34,8 +34,8 @@ module Geniverse
         return acts
       end
 
-      def run(stream_or_path = 'stars_report.xls')
-        wb = Spreadsheet::Workbook.new
+      def run_report
+        wb = Reports::Book.new
         stars_sheet = wb.create_worksheet :name => 'stars'
         journal_sheet = wb.create_worksheet :name => 'journal'
 
@@ -74,10 +74,11 @@ module Geniverse
           return a[1] <=> b[1]
         }
         journal_sheet.rows.sort!(&journal_sort)
-        journal_sheet.updated_from(0)
-        journal_sheet.format_dates!('MM-DD-YYYY HH:MM AM/PM')
+        #journal_sheet.updated_from(0)
+        #journal_sheet.format_dates!('MM-DD-YYYY HH:MM AM/PM')
 
-        wb.write stream_or_path
+        #wb.write stream_or_path
+        return wb
       end
 
       def lookup_id_from_path(path)
@@ -114,11 +115,12 @@ module Geniverse
                     v
                   end
                 }
-                if sheet[@current_row[:stars], col] && sheet[@current_row[:stars], col] != ""
-                  sheet[@current_row[:stars], col] = sheet[@current_row[:stars], col].to_s + ","
+                if sheet.row(@current_row[:stars])[col] &&
+                   sheet.row(@current_row[:stars])[col] != ""
+                  sheet.row(@current_row[:stars])[col] = sheet.row(@current_row[:stars])[col].to_s + ","
                 end
-                sheet[@current_row[:stars], col] ||= ""
-                sheet[@current_row[:stars], col] += realVals.join(',').to_s
+                sheet.row(@current_row[:stars])[col] ||= ""
+                sheet.row(@current_row[:stars])[col] += realVals.join(',').to_s
               end
             end
           end

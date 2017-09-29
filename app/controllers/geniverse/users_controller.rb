@@ -113,9 +113,14 @@ module Geniverse
       b64 = params[:id] || ""
       b64 = b64.gsub('_','/').gsub('-','+')
       report = Report::Stars.new Base64.decode64(b64).split(',')
-      report.run(sio)
-      send_data(sio.string, :type => "application/vnd.ms.excel", :filename => "stars.xls" )
+
+      book = report.run_report
+      send_data(book.to_data_string,
+                 :type => "application/vnd.ms.excel",
+                 :filename => "stars.xls" )
+
     end
+
 
   end
 end
