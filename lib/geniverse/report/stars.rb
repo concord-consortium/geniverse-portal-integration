@@ -35,7 +35,7 @@ module Geniverse
       end
 
       def run(stream_or_path = 'stars_report.xls')
-        wb = Spreadsheet::Workbook.new
+        wb = Reports::Book.new
         stars_sheet = wb.create_worksheet :name => 'stars'
         journal_sheet = wb.create_worksheet :name => 'journal'
 

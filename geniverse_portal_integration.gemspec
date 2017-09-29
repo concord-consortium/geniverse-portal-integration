@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.19"
   s.add_dependency "haml", "~> 4.0"
   s.add_dependency "json", "~> 1.8.6"
-  s.add_dependency "spreadsheet", ">= 0.7.3"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec",       "~> 2.12.0"
