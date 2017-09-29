@@ -74,8 +74,8 @@ module Geniverse
           return a[1] <=> b[1]
         }
         journal_sheet.rows.sort!(&journal_sort)
-        journal_sheet.updated_from(0)
-        journal_sheet.format_dates!('MM-DD-YYYY HH:MM AM/PM')
+        #journal_sheet.updated_from(0)
+        #journal_sheet.format_dates!('MM-DD-YYYY HH:MM AM/PM')
 
         wb.write stream_or_path
       end
