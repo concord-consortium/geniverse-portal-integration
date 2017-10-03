@@ -1,3 +1,34 @@
 = GeniversePortalIntegration
 
 This project rocks and uses MIT-LICENSE.
+
+== Building the gem
+
+Building the gem:
+
+Optionally check or set VERSION in lib/geniverse_portal_integration/version.rb
+
+    gem build geniverse_portal_integration.gemspec
+
+
+Installing the gem
+
+    bundle exec gem install geniverse_portal_integration-<version>.gem
+
+E.g.
+
+    bundle exec gem install geniverse_portal_integration-0.0.7.gem
+
+
+Or install in portal from a branch. Edit portal's Gemfile:
+
+  gem   "geniverse_portal_integration",
+        :git => "git://github.com/concord-consortium/geniverse-portal-integration",
+        :branch => "your-branch-name"
+
+Then run
+
+    bundle exec gem uninstall geniverse_portal_integration
+
+    bundle update geniverse_portal_integration
+
