@@ -93,7 +93,7 @@ module Geniverse
     # POST /dragons
     # POST /dragons.xml
     def create
-      dragon = params[:dragon]
+      dragon = dragon_params
       dragon.delete(:guid)
       # mother and father attributes get sent from sproutcore in the form /rails/dragons/NN
       Dragon.reflect_on_all_associations(:belongs_to).each do |assoc|
@@ -120,7 +120,7 @@ module Geniverse
     # PUT /dragons/1.xml
     def update
       @dragon = Dragon.find(params[:id])
-      dragon = params[:dragon]
+      dragon = dragon_params
       dragon.delete(:guid)
       Dragon.reflect_on_all_associations(:belongs_to).each do |assoc|
         name = assoc.name
@@ -224,6 +224,26 @@ module Geniverse
         }
       end
 
+    end
+
+    def dragon_params
+      params.require(:dragon).permit(
+        :name,
+        :sex,
+        :alleles,
+        :imageURL,
+        :mother_id,
+        :father_id,
+        :bred,
+        :user_id,
+        :stableOrder,
+        :isEgg,
+        :isInMarketplace,
+        :activity_id,
+        :breeder_id,
+        :breedTime,
+        :isMatchDragon
+      )
     end
 
   end

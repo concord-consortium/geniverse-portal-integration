@@ -43,7 +43,7 @@ module Geniverse
     # POST /unlockables
     # POST /unlockables.json
     def create
-      @unlockable = Unlockable.new(params[:unlockable])
+      @unlockable = Unlockable.new(unlockable_params)
 
       respond_to do |format|
         if @unlockable.save
@@ -62,7 +62,7 @@ module Geniverse
       @unlockable = Unlockable.find(params[:id])
 
       respond_to do |format|
-        if @unlockable.update_attributes(params[:unlockable])
+        if @unlockable.update_attributes(unlockable_params)
           format.html { redirect_to @unlockable, notice: 'Unlockable was successfully updated.' }
           format.json { head :no_content }
         else
@@ -82,6 +82,17 @@ module Geniverse
         format.html { redirect_to unlockables_url }
         format.json { head :no_content }
       end
+    end
+
+    private
+
+    def unlockable_params
+      params.require(:unlockable).permit(
+        :title,
+        :content,
+        :trigger,
+        :open_automatically
+      )
     end
   end
 end

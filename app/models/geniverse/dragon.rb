@@ -1,6 +1,5 @@
 module Geniverse
   class Dragon < ActiveRecord::Base
-    attr_protected :id
     has_many :children, :class_name => "Dragon", :finder_sql => proc { "SELECT * FROM #{self.class.table_name} WHERE mother_id = #{id} OR father_id = #{id}" }
     has_many :siblings, :class_name => "Dragon", :finder_sql => proc { "SELECT * FROM #{self.class.table_name} WHERE (mother_id = #{mother_id} OR father_id = #{father_id}) AND breeder_id = #{breeder_id} AND breedTime = #{breedTime} AND id != #{id}" }
 
