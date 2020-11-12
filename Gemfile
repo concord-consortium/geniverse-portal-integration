@@ -1,4 +1,5 @@
 source "http://rubygems.org"
+source "https://gems.railslts.com"
 
 # Declare your gem's dependencies in genigames_connector.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and

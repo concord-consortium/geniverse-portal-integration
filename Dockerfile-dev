@@ -1,0 +1,22 @@
+FROM concordconsortium/docker-rails-base-private:2.3.7-4.2.11.17
+
+# Debian 8 (jessie) is no longer supported
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie main" >> /etc/apt/sources.list.d/jessie.list
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" >> /etc/apt/sources.list.d/jessie.list
+RUN sed -i '/deb http:\/\/deb.debian.org\/debian jessie.* main/d' /etc/apt/sources.list
+RUN apt-get -o Acquire::Check-Valid-Until=false update
+
+ENV APP_HOME /gpi
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+# use a mounted volume so the gems don't need to be rebundled each time
+ENV BUNDLE_PATH /bundle
+
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
+  BUNDLE_JOBS=2 \
+  BUNDLE_PATH=/bundle
+
+ENV RAILS_ENV=development
+
+CMD /bin/bash
