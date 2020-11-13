@@ -3,7 +3,7 @@ class Saveable::OpenResponse < ActiveRecord::Base
   belongs_to :offering, :class_name => 'Portal::Offering'
   belongs_to :open_response, :class_name => 'Embeddable::OpenResponse'
 
-  has_many :answers, :class_name => 'Saveable::OpenResponseAnswer', -> { order(:position) }
+  has_many :answers, -> { order(:position) }, :class_name => 'Saveable::OpenResponseAnswer'
 
   delegate :prompt, :to => :open_response, :class_name => 'Embeddable::OpenResponse'
 
