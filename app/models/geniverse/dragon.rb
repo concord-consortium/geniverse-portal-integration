@@ -1,7 +1,8 @@
 module Geniverse
   class Dragon < ActiveRecord::Base
-    has_many :children, :class_name => "Dragon", :finder_sql => proc { "SELECT * FROM #{self.class.table_name} WHERE mother_id = #{id} OR father_id = #{id}" }
-    has_many :siblings, :class_name => "Dragon", :finder_sql => proc { "SELECT * FROM #{self.class.table_name} WHERE (mother_id = #{mother_id} OR father_id = #{father_id}) AND breeder_id = #{breeder_id} AND breedTime = #{breedTime} AND id != #{id}" }
+    # finder_sql deprecated in Rails 4 - replacements below
+    # has_many :children, :class_name => "Dragon", :finder_sql => proc { "SELECT * FROM #{self.class.table_name} WHERE mother_id = #{id} OR father_id = #{id}" }
+    # has_many :siblings, :class_name => "Dragon", :finder_sql => proc { "SELECT * FROM #{self.class.table_name} WHERE (mother_id = #{mother_id} OR father_id = #{father_id}) AND breeder_id = #{breeder_id} AND breedTime = #{breedTime} AND id != #{id}" }
 
     belongs_to :father, :class_name => "Dragon"
     belongs_to :mother, :class_name => "Dragon"
@@ -10,6 +11,14 @@ module Geniverse
 
     belongs_to :user
     belongs_to :breeder, :class_name => "User", :foreign_key => "breeder_id"
+
+    def children
+      Dragon.where("mother_id = ? OR father_id = ?", id, id)
+    end
+
+    def siblings
+      Dragon.where("(mother_id = ? OR father_id = ?) AND breeder_id = ? AND breedTime = ? AND id != ?", mother_id, father_id, breeder_id, breedTime, id)
+    end
 
     def self.searchFields
       return {
