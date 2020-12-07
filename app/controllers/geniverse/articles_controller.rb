@@ -43,7 +43,7 @@ module Geniverse
     # POST /articles
     # POST /articles.xml
     def create
-      article = params[:article]
+      article = article_params
       article.delete(:guid)
 
       Article.reflect_on_all_associations(:belongs_to).each do |assoc|
@@ -70,7 +70,7 @@ module Geniverse
     # PUT /articles/1.xml
     def update
       @article = Article.find(params[:id])
-      article = params[:article]
+      article = article_params
       article.delete(:guid)
       Article.reflect_on_all_associations(:belongs_to).each do |assoc|
         name = assoc.name
@@ -101,6 +101,20 @@ module Geniverse
         format.html { redirect_to(articles_url) }
         format.xml  { head :ok }
       end
+    end
+
+    private
+
+    def article_params
+      params.require(:article).permit(
+        :group,
+        :activity_id,
+        :text,
+        :time,
+        :submitted,
+        :teacherComment,
+        :accepted
+      )
     end
   end
 end

@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   # make sure to match gem versions with the portal
-  s.add_dependency "rails", "~> 3.2.19"
+  s.add_dependency "rails", "4.2.11.17"
   s.add_dependency "haml", "~> 4.0"
   s.add_dependency "json", "~> 1.8.6"
 

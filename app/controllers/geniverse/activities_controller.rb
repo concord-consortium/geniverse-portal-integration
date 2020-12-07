@@ -49,7 +49,7 @@ module Geniverse
     # POST /activities
     # POST /activities.xml
     def create
-      @activity = Activity.new(params[:activity])
+      @activity = Activity.new(activity_params)
 
       respond_to do |format|
         if @activity.save
@@ -70,7 +70,7 @@ module Geniverse
       @activity = Activity.find(params[:id])
 
       respond_to do |format|
-        if @activity.update_attributes(params[:activity])
+        if @activity.update_attributes(activity_params)
           flash[:notice] = 'Activity was successfully updated.'
           format.html { redirect_to(@activity) }
           format.xml  { head :ok }
@@ -92,7 +92,7 @@ module Geniverse
         format.xml  { head :ok }
       end
     end
-    
+
     def destroy_dragons
       @activity = params[:id]
       @dragons = Dragon.find(:all, :conditions => {:activity_id => @activity})
@@ -100,6 +100,32 @@ module Geniverse
       redirect_to(activities_url)
     end
 
+    private
+
+    def activity_params
+      params.require(:activity).permit(
+        :initial_alleles,
+        :base_channel_name,
+        :max_users_in_room,
+        :send_bred_dragons,
+        :title,
+        :hidden_genes,
+        :static_genes,
+        :crossover_when_breeding,
+        :route,
+        :pageType,
+        :message,
+        :match_dragon_alleles,
+        :myCase_id,
+        :myCaseOrder,
+        :is_argumentation_challenge,
+        :threshold_three_stars,
+        :threshold_two_stars,
+        :show_color_labels,
+        :congratulations,
+        :show_tooltips
+      )
+    end
 
   end
 end

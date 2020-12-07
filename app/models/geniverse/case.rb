@@ -1,7 +1,6 @@
 module Geniverse
   class Case < ActiveRecord::Base
-    attr_protected :id
-    has_many :activities, :foreign_key => :myCase_id, :order => "myCaseOrder ASC"
+    has_many :activities, -> { order("myCaseOrder ASC") }, :foreign_key => :myCase_id
 
     def includeInJSon?(name)
       return [:activities].include?(name.to_sym)

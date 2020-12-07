@@ -44,7 +44,7 @@ module Geniverse
     # POST /help_messages.xml
     def create
       logger.warn("params: #{params[:help_message].inspect}")
-      @help_message = HelpMessage.new(params[:help_message])
+      @help_message = HelpMessage.new(help_message_params)
 
       respond_to do |format|
         if @help_message.save
@@ -63,7 +63,7 @@ module Geniverse
       @help_message = HelpMessage.find(params[:id])
 
       respond_to do |format|
-        if @help_message.update_attributes(params[:help_message])
+        if @help_message.update_attributes(help_message_params)
           format.html { redirect_to(@help_message, :notice => 'HelpMessage was successfully updated.') }
           format.xml  { head :ok }
         else
@@ -83,6 +83,15 @@ module Geniverse
         format.html { redirect_to(help_messages_url) }
         format.xml  { head :ok }
       end
+    end
+
+    private
+
+    def help_message_params
+      params.require(:help_message).permit(
+        :page_name,
+        :message
+      )
     end
   end
 end

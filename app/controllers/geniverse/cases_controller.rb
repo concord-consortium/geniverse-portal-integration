@@ -43,7 +43,7 @@ module Geniverse
     # POST /cases
     # POST /cases.xml
     def create
-      @case = Case.new(params[:geniverse_case])
+      @case = Case.new(geniverse_case_params)
 
       respond_to do |format|
         if @case.save
@@ -64,7 +64,7 @@ module Geniverse
       @case = Case.find(params[:id])
 
       respond_to do |format|
-        if @case.update_attributes(params[:geniverse_case])
+        if @case.update_attributes(geniverse_case_params)
           flash[:notice] = 'Case was successfully updated.'
           format.html { redirect_to(@case) }
           format.xml  { head :ok }
@@ -86,6 +86,15 @@ module Geniverse
         format.xml  { head :ok }
       end
     end
-    
+
+    private
+
+    def geniverse_case_params
+      params.require(:geniverse_case).permit(
+        :name,
+        :order,
+        :introImageUrl
+      )
+    end
   end
 end

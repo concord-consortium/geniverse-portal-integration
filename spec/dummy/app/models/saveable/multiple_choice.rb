@@ -1,11 +1,9 @@
 class Saveable::MultipleChoice < ActiveRecord::Base
-  attr_accessible :learner, :multiple_choice
-
   belongs_to :learner, :class_name => 'Portal::Learner'
   belongs_to :offering, :class_name => 'Portal::Offering'
   belongs_to :multiple_choice, :class_name => 'Embeddable::MultipleChoice'
 
-  has_many :answers, :order => :position, :class_name => 'Saveable::MultipleChoiceAnswer'
+  has_many :answers, -> { order(:position) }, :class_name => 'Saveable::MultipleChoiceAnswer'
 
   def answer
     if answered?
