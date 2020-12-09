@@ -61,7 +61,7 @@ module Geniverse
     # POST /users
     # POST /users.xml
     def create
-      user_params = paramify_json(strong_user_params)
+      user_params = strong_user_params()
       user_params[:password_hash] = user_params[:passwordHash] if user_params.has_key? :passwordHash
       user_params.delete(:passwordHash)
 
@@ -84,7 +84,7 @@ module Geniverse
     def update
       @user = Geniverse::User.find(params[:id])
       respond_to do |format|
-        attributes = paramify_json(strong_user_params)
+        attributes = strong_user_params()
         if @user.update_attributes(attributes)
           format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
           format.xml  { head :ok }
@@ -124,7 +124,8 @@ module Geniverse
     private
 
     def strong_user_params
-      params.require(:user).permit(
+      paramified_params = paramify_json(params[:user])
+      strong_params = paramified_params.permit(
         :username,
         :password_hash,
         :group_id,
@@ -133,9 +134,15 @@ module Geniverse
         :last_name,
         :note,
         :class_name,
-        :metadata,
         :avatar
       )
+
+      # allow arbitrary metadata
+      if paramified_params.has_key?(:metadata)
+        strong_params[:metadata] = paramified_params[:metadata]
+        strong_params.permit!
+      end
+      strong_params
     end
   end
 end
